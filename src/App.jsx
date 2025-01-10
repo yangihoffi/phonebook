@@ -1,9 +1,9 @@
-import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import personsService from "./services/persons.service";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -12,9 +12,7 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then((res) => setPersons(res.data));
+    personsService.getAll().then((res) => setPersons(res.data));
   }, []);
 
   const addPerson = (e) => {
@@ -33,13 +31,11 @@ const App = () => {
         id: uuidv4(),
       };
 
-      axios
-        .post("http://localhost:3001/persons", newPersonObject)
-        .then((res) => {
-          setPersons(persons.concat(res.data));
-          setNewName("");
-          setNewNumber("");
-        });
+      personsService.create(newPersonObject).then((res) => {
+        setPersons(persons.concat(res.data));
+        setNewName("");
+        setNewNumber("");
+      });
     }
   };
 
