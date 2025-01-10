@@ -7,6 +7,7 @@ const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [filter, setFilter] = useState("");
 
   useEffect(() => {
     axios
@@ -40,10 +41,19 @@ const App = () => {
     }
   };
 
+  const personsToShow = persons.filter((person) =>
+    person.name.toLowerCase().includes(filter.toLowerCase())
+  );
+
   return (
     <>
       <div>
         <h2>Phonebook</h2>
+        <input
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder="Search a name..."
+        />
         <h2>Add a new</h2>
         <form onSubmit={addPerson}>
           Name:{" "}
@@ -67,7 +77,7 @@ const App = () => {
       </div>
       <div>
         <h2>Numbers</h2>
-        {persons.map((person) => (
+        {personsToShow.map((person) => (
           <Entry key={person.id} person={person} />
         ))}
       </div>
