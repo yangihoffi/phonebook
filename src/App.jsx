@@ -1,7 +1,9 @@
 import axios from "axios";
-import Entry from "./components/Entry";
 import { v4 as uuidv4 } from "uuid";
 import { useState, useEffect } from "react";
+import Filter from "./components/Filter";
+import PersonForm from "./components/PersonForm";
+import Persons from "./components/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -46,42 +48,20 @@ const App = () => {
   );
 
   return (
-    <>
-      <div>
-        <h2>Phonebook</h2>
-        <input
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          placeholder="Search a name..."
-        />
-        <h2>Add a new</h2>
-        <form onSubmit={addPerson}>
-          Name:{" "}
-          <input
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            placeholder="Enter a name..."
-            required
-          />
-          <br />
-          Number:{" "}
-          <input
-            value={newNumber}
-            onChange={(e) => setNewNumber(e.target.value)}
-            placeholder="Enter a number..."
-            required
-          />
-          <br />
-          <button type="submit">Add</button>
-        </form>
-      </div>
-      <div>
-        <h2>Numbers</h2>
-        {personsToShow.map((person) => (
-          <Entry key={person.id} person={person} />
-        ))}
-      </div>
-    </>
+    <div>
+      <h2>Phonebook</h2>
+      <Filter filter={filter} setFilter={(e) => setFilter(e.target.value)} />
+      <h2>Add a new</h2>
+      <PersonForm
+        newName={newName}
+        newNumber={newNumber}
+        setNewName={(e) => setNewName(e.target.value)}
+        setNewNumber={(e) => setNewNumber(e.target.value)}
+        addPerson={addPerson}
+      />
+      <h2>Numbers</h2>
+      <Persons persons={personsToShow} />
+    </div>
   );
 };
 
