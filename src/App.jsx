@@ -18,12 +18,18 @@ const App = () => {
   const addPerson = (e) => {
     e.preventDefault();
 
-    const foundPerson = persons.findIndex(
+    const foundPerson = persons.find(
       (p) => p.name.toLowerCase() === newName.toLowerCase()
     );
 
-    if (foundPerson !== -1) {
-      alert(`${newName} already exists in the phonebook.`);
+    if (foundPerson) {
+      if (
+        window.confirm(
+          `${newName} already exists in the phonebook, replace the old number with a new one?`
+        )
+      ) {
+        updatePerson(foundPerson);
+      }
     } else {
       const newPersonObject = {
         name: newName,
@@ -37,6 +43,21 @@ const App = () => {
         setNewNumber("");
       });
     }
+  };
+
+  const updatePerson = (foundPerson) => {
+    const id = foundPerson.id;
+    const changedPerson = {
+      ...foundPerson,
+      number: newNumber,
+    };
+
+    personsService.update(id, changedPerson).then((res) => {
+      setPersons(persons.map((p) => (p.id === id ? res.data : p)));
+    });
+
+    setNewName("");
+    setNewNumber("");
   };
 
   const deletePerson = (id) => {
