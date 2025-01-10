@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useState, useEffect, Fragment } from "react";
+import Entry from "./components/Entry";
+import { useState, useEffect } from "react";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -15,10 +16,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <h2>Numbers</h2>
       {persons.map((person) => (
-        <Fragment key={person.id}>
-          <p>{person.name}</p>
-          <br />
-        </Fragment>
+        <Entry key={person.id} person={person} />
       ))}
     </>
   );
