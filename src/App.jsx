@@ -16,14 +16,14 @@ const App = () => {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
+  const getAllPersons = () => {
     setLoading(true);
 
     personsService.getAll().then((res) => {
       setPersons(res.data);
       setLoading(false);
     });
-  }, []);
+  };
 
   const addPerson = (e) => {
     e.preventDefault();
@@ -119,6 +119,8 @@ const App = () => {
   const personsToShow = persons.filter((person) =>
     person.name.toLowerCase().includes(filter.toLowerCase())
   );
+
+  useEffect(getAllPersons, []);
 
   return (
     <div>
