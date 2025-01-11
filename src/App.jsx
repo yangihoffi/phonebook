@@ -16,6 +16,13 @@ const App = () => {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const notify = (msg, timeout = 2000) => {
+    setMessage(msg);
+    setTimeout(() => {
+      setMessage(null);
+    }, timeout);
+  };
+
   const getAllPersons = () => {
     setLoading(true);
 
@@ -49,11 +56,7 @@ const App = () => {
 
       personsService.create(newPersonObject).then((res) => {
         setPersons(persons.concat(res.data));
-
-        setMessage(`Added ${newName}`);
-        setTimeout(() => {
-          setMessage(null);
-        }, 2000);
+        notify(`Added ${newName}`);
 
         setNewName("");
         setNewNumber("");
@@ -75,12 +78,9 @@ const App = () => {
       })
       .catch((error) => {
         console.log(error);
-        setMessage(
+        notify(
           `Information of ${newName} has already been removed from server`
         );
-        setTimeout(() => {
-          setMessage(null);
-        }, 2000);
       });
 
     setNewName("");
@@ -102,18 +102,14 @@ const App = () => {
       .remove(id)
       .then((res) => {
         setPersons(persons.filter((p) => p.id !== res.data.id));
+        notify(`Deleted ${res.data.name}`);
       })
       .catch((error) => {
         console.log(error);
-        setMessage(
+        notify(
           `Information of ${foundPerson.name} has already been removed from server`
         );
-        setTimeout(() => {
-          setMessage(null);
-        }, 2000);
       });
-
-    console.log(`Deleted ${id}`);
   };
 
   const personsToShow = persons.filter((person) =>
