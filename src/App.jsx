@@ -14,9 +14,15 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
   const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    personsService.getAll().then((res) => setPersons(res.data));
+    setLoading(true);
+
+    personsService.getAll().then((res) => {
+      setPersons(res.data);
+      setLoading(false);
+    });
   }, []);
 
   const addPerson = (e) => {
@@ -128,7 +134,11 @@ const App = () => {
         addPerson={addPerson}
       />
       <h2>Numbers</h2>
-      <Persons persons={personsToShow} deletePerson={deletePerson} />
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <Persons persons={personsToShow} deletePerson={deletePerson} />
+      )}
     </div>
   );
 };
