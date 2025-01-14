@@ -100,9 +100,9 @@ const App = () => {
 
     personsService
       .remove(id)
-      .then((res) => {
-        setPersons(persons.filter((p) => p.id !== res.data.id));
-        notify(`Deleted ${res.data.name}`);
+      .then(() => {
+        setPersons(persons.filter((p) => p.id !== id));
+        notify(`Deleted ${foundPerson.name}`);
       })
       .catch((error) => {
         console.log(error);
